@@ -1,0 +1,7 @@
+/dist
+.idea
+/__pycache__
+/build
+/event_bus.iml
+/event_bus.egg-info
+/*/__pycache__
