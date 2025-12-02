@@ -44,7 +44,7 @@ setup(
     # 依赖包列表
     ,install_requires=[
         "pydantic>=2.12.5",
-        "obj2dist @ git+https://github.com/mrnfqrbl/obj2dist.git@0.1.2#egg=obj2dist"
+        "obj2dict @ git+https://github.com/mrnfqrbl/obj2dict.git@0.1.2#egg=obj2dict"
 
 
     ]
