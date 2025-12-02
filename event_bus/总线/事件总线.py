@@ -3,10 +3,7 @@ import threading
 import asyncio
 from collections import defaultdict
 from typing import Callable, List, Dict, Any
-try:
-    from event_bus.总线 import 总线工具函数
-except ImportError:
-    print("警告：未找到 总线.工具函数类，将不加载工具函数")
+
 
 from event_bus.公共类型定义.事件对象模型 import 总线通用事件模型
 from event_bus.总线.日志事件生成工具 import 日志事件生成器 as 日志事件生成器类
@@ -19,9 +16,12 @@ class 事件总线:
         self._订阅表: Dict[str, List[tuple[str, Callable]]] = defaultdict(list)
         self._锁 = threading.Lock()
         self.日志事件生成器=日志事件生成器类()
-        if 总线工具函数:
-
+        try:
+            from event_bus.总线 import 总线工具函数
             self.总线工具函数=总线工具函数
+
+        except ImportError:
+            print("警告：未找到 总线.工具函数类，将不加载工具函数")
 
         self.总线内嵌http框架=总线内嵌http框架(总线=self)
         self.总线内嵌http服务器=总线内嵌http服务器
@@ -116,3 +116,7 @@ class 事件总线:
     def 获取所有事件名(self) -> List[str]:
         with self._锁:
             return list(self._订阅表.keys())
+
+
+if __name__ == "__main__":
+    pass

@@ -13,7 +13,7 @@ import datetime
 from dataclasses import is_dataclass, asdict
 from typing import Any, Dict
 
-from obj2dist import 可序列化类基础模型
+from obj2dist import 可序列化基类 as 可序列化类基础模型
 
 
 class 订阅者事件返回模型(可序列化类基础模型):
