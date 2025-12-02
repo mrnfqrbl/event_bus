@@ -1,6 +1,6 @@
 # 文件路径：bus_compatible_framework.py
-from 公共类型定义.事件总线模型 import I事件总线 as 事件总线
-from 公共类型定义.事件对象模型 import 总线通用事件模型
+from event_bus.公共类型定义.事件总线模型 import I事件总线 as 事件总线
+from event_bus.公共类型定义.事件对象模型 import 总线通用事件模型
 from .请求模型 import 请求对象, 响应对象
 
 class 总线内嵌http框架:

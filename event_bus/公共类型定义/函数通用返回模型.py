@@ -1,8 +1,8 @@
 
 from dataclasses import dataclass
-from typing import Any, Optional, Dict, ClassVar
+from typing import Any, Optional, ClassVar
 
-from 公共类型定义.事件对象模型 import 可序列化类基础模型
+from event_bus.公共类型定义.事件对象模型 import 可序列化类基础模型
 
 
 @dataclass

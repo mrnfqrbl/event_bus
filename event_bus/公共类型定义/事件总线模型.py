@@ -1,7 +1,7 @@
 # 文件路径: src/pkg/总线/事件总线接口.py
-from typing import Protocol, Callable, Any
+from typing import Callable, Any
 from abc import ABC, abstractmethod
-from 公共类型定义.事件对象模型 import 总线通用事件模型
+from event_bus.公共类型定义.事件对象模型 import 总线通用事件模型
 
 
 class I事件总线(ABC):

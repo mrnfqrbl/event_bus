@@ -6,7 +6,7 @@
 #   2. 日志等级支持：DEBUG/INFO/WARNING/ERROR/CRITICAL
 #   3. 简单易用中文 API：debug/info/warning/error/critical
 #   4. 与总线解耦，可随时发送事件到总线
-from 公共类型定义.事件对象模型 import 日志事件
+from event_bus.公共类型定义.事件对象模型 import 日志事件
 import inspect
 import time
 

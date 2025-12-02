@@ -12,66 +12,8 @@ from typing import Any, Dict, List
 import datetime
 from dataclasses import is_dataclass, asdict
 from typing import Any, Dict
-from enum import Enum
-from
-from pydantic import BaseModel
 
-# class 可序列化类基础模型:
-#     def 转字典(self) -> Dict[str, Any]:
-#         def _递归(v):
-#             # 可序列化基础模型
-#             if isinstance(v, 可序列化类基础模型):
-#                 return v.转字典()
-#
-#             # Pydantic BaseModel
-#             elif isinstance(v, BaseModel):
-#                 return _递归(v.dict())
-#
-#             # dataclass 对象
-#             elif is_dataclass(v):
-#                 return _递归(asdict(v))
-#
-#             # dict
-#             elif isinstance(v, dict):
-#                 return {kk: _递归(vv) for kk, vv in v.items()}
-#
-#             # list/tuple/set/frozenset
-#             elif isinstance(v, (list, tuple, set, frozenset)):
-#                 return [_递归(vv) for vv in v]
-#
-#             # Enum
-#             elif isinstance(v, Enum):
-#                 return v.value
-#
-#             # datetime/date
-#             elif isinstance(v, (datetime.datetime, datetime.date)):
-#                 return v.isoformat()
-#
-#             # ObjectId
-#             elif isinstance(v, ObjectId):
-#                 return v
-#
-#             # 原子类型 (str, int, float, bool, None)
-#             else:
-#                 return v
-#
-#         return {k: _递归(v) for k, v in vars(self).items()}
-# # class 可序列化类基础模型:
-# #     def 转字典(self) -> Dict[str, Any]:
-# #         def _递归(v):
-# #             if isinstance(v, 可序列化类基础模型):
-# #                 return v.转字典()
-# #             elif isinstance(v, dict):
-# #                 return {kk: _递归(vv) for kk, vv in v.items()}
-# #             elif isinstance(v, list):
-# #                 return [_递归(vv) for vv in v]
-# #             elif isinstance(v, datetime.datetime):
-# #                 return v.isoformat()
-# #             else:
-# #                 return v
-# #
-# #         return {k: _递归(v) for k, v in vars(self).items()}
-#
+from obj2dist import 可序列化类基础模型
 
 
 class 订阅者事件返回模型(可序列化类基础模型):

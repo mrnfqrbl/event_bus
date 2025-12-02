@@ -14,7 +14,7 @@
 from .请求模型 import 请求对象, 响应对象
 import socket
 import threading
-from 公共类型定义.事件总线模型 import I事件总线 as 事件总线
+from event_bus.公共类型定义.事件总线模型 import I事件总线 as 事件总线
 
 class 总线内嵌http服务器:
 
