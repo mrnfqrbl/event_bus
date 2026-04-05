@@ -45,8 +45,9 @@ def url解码(s:str):
     return "".join(result)
 
 
-class url解析模型():
-
-
-
-def url解析
+# class url解析模型():
+#
+#
+#
+#     def url解析():
+#     pass

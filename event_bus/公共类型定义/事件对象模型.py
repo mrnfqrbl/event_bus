@@ -1,10 +1,11 @@
-
+import asyncio
+import threading
 from typing import Dict, Any, Optional, List
 
 import datetime
 import uuid
 from typing import Any, Dict, List
-
+from ..总线.工具函数类 import 总线工具函数
 # -------------------------------------------------------------
 # 订阅者事件返回模型
 # 说明：用于存放每个订阅者处理事件后的返回信息
@@ -14,6 +15,7 @@ from dataclasses import is_dataclass, asdict
 from typing import Any, Dict
 
 from obj2dict import 可序列化基类 as 可序列化类基础模型
+
 
 
 class 订阅者事件返回模型(可序列化类基础模型):
@@ -29,6 +31,21 @@ class 订阅者事件返回模型(可序列化类基础模型):
         self.错误信息: Optional[str] = None  # 处理过程中出现错误时赋值
         self.开始时间: Optional[datetime.datetime] = None  # 处理开始时赋值
         self.结束时间: Optional[datetime.datetime] = None  # 处理完成时赋值
+    def 处理成功(self,数据: Any = None,错误信息: str = None):
+        self.状态=self.成功
+        self.错误信息=错误信息
+        self.数据=数据
+    def 处理失败(self,错误信息: str = None,数据: Any = None):
+        self.状态=self.失败
+        self.错误信息=错误信息
+        self.数据=数据
+    def 开始(self):
+        self.开始时间=总线工具函数.获取当前时间()
+    def 结束(self):
+        self.结束时间=总线工具函数.获取当前时间()
+        self.订阅者处理耗时=(self.结束时间-self.开始时间).total_seconds()
+
+
 
 # -------------------------------------------------------------
 # 总线通用事件模型
@@ -49,29 +66,56 @@ class 总线通用事件模型(可序列化类基础模型):
         self.时间总耗时: float = 0.0   # 默认0.0，处理完成后更新
 
 
+        self.总订阅者=0
+        self.未完成订阅者=0
+        self._锁=threading.Lock()
+        self._f=asyncio.Future()
 
-        # 初始化每个订阅者的返回模型
+
+
         if 订阅者列表 :
+            self.总订阅者=len(订阅者列表)
+            self.未完成订阅者=len(订阅者列表)
 
-            self.事件返回: Dict[str, 订阅者事件返回模型] = {
-                名: 订阅者事件返回模型(订阅者名=名,序号=索引) for 索引,名 in enumerate(订阅者列表,start=1)
-
-            }
-    def 计算总耗时(self):
-        总耗时=0.0
-        for 订阅者, 返回模型 in self.事件返回.items():
-            总耗时+=返回模型.事件处理耗时
-        return 总耗时
-    def 重新初始化(self,订阅者列表: List[str]=None, 事件数据: Any = None):
-        self.订阅者列表=订阅者列表
-        self.事件数据=事件数据
-        if 订阅者列表 :
             self.事件返回: Dict[str, 订阅者事件返回模型] = {
                 名: 订阅者事件返回模型(订阅者名=名,序号=索引) for 索引,名 in enumerate(订阅者列表,start=1)
 
             }
         else:
+            self.总订阅者=0
+            self.未完成订阅者=0
             self.事件返回={}
+
+
+
+
+    def 计算总耗时(self):
+        总耗时=0.0
+        for 订阅者, 返回模型 in self.事件返回.items():
+            总耗时+=返回模型.事件处理耗时
+        return 总耗时
+    def __await__(self):
+        return self._f.__await__()
+    async def 等待完成(self):
+        await self
+        return self
+
+    def 初始化(self,订阅者列表: List[str]=None, 事件数据: Any = None):
+        self.订阅者列表=订阅者列表
+        self.事件数据=事件数据
+
+    def 完成一个(self):
+        with self._锁:
+            self.未完成订阅者-=1
+            if self.未完成订阅者>0:
+                return
+
+        if not self._f.done():
+            self._f.set_result(self)
+            self.事件结束时间=总线工具函数.获取当前时间()
+            self.时间总耗时=(self.事件结束时间-self.事件提交时间).total_seconds()
+
+        return None
 
 
 
